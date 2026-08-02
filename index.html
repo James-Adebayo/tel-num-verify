@@ -27,7 +27,7 @@
         submitBtn.disabled = true;
         submitBtn.textContent = "Verifying...";
         try {
-            const response = await fetch("/validate", {
+            const response = await fetch("/api/validate", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
