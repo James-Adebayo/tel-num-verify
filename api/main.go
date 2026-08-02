@@ -5,11 +5,14 @@ import (
 	"num-verify/controller"
 )
 
-func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.FileServer(http.Dir("../index.html"))
+func Handler(w http.ResponseWriter, r *http.Request) {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "index.html")
 	})
-	http.HandleFunc("/validate", controller.ValidateController)
-	// fmt.Println("Server started on http://localhost:8080/")
-	http.ListenAndServe(":80", nil)
+
+	mux.HandleFunc("/validate", controller.ValidateController)
+
+	mux.ServeHTTP(w, r)
 }
