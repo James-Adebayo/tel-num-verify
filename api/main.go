@@ -7,7 +7,7 @@ import (
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.FileServer(http.Dir("./public/index.html"))
+		http.FileServer(http.Dir("../index.html"))
 	})
 	http.HandleFunc("/validate", controller.ValidateController)
 	// fmt.Println("Server started on http://localhost:8080/")
