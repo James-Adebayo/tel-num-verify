@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -13,7 +14,7 @@ import (
 
 func ValidateNumber(number string) (map[string]any, error) {
 	if err := godotenv.Load(); err != nil {
-		return nil, errors.New("Failed to load ENV")
+		log.Println("Failed to load env")
 	}
 
 	if number == "" {
