@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"num-verify/model"
 	"num-verify/response"
@@ -36,7 +37,11 @@ func ValidateController(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Println("Before ValidateNumber")
+
 	result, err := service.ValidateNumber(validate.Number)
+
+	log.Println("After ValidateNumber", err)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(response.Response{

@@ -70,7 +70,7 @@
                 </table>
             `
         }catch(err){
-            responsecontainer.textContent = "network error"
+            responsecontainer.textContent = err
             console.log(err)
         }finally{
             submitBtn.disabled = false;

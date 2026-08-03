@@ -1,3 +1,5 @@
 .env
 note.txt
-main.go
+apif/
+.vercel
+.env*
