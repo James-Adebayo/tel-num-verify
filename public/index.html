@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <h2>Tel-Number Info</h2>
+        <label for="number">Phone Number</label>
+        <input type="tel" name="number" id="number" required>
+        <button type="submit" id="submit">Search Number</button>
+    </form>
+
+    <div id="response">No data </div>
+</body>
+
+<script>
+    const form = document.querySelector('form');
+    const responsecontainer = document.getElementById("response");
+    const submitBtn = document.getElementById('submit');
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const phonenumber = document.getElementById('number').value;
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Verifying...";
+        try {
+            const response = await fetch("http://localhost:8080/validate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({number: phonenumber})
+            })
+
+            const data = await response.json();
+
+            responsecontainer.textContent = data.message ?? "Error fetching data";
+        }catch(err){
+            responsecontainer.textContent = "network error"
+            console.log(err)
+        }finally{
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Search number";
+        }
+    })
+</script>
+</html>
