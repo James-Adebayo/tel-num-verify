@@ -27,7 +27,7 @@
         submitBtn.disabled = true;
         submitBtn.textContent = "Verifying...";
         try {
-            const response = await fetch("/api/validate", {
+            const response = await fetch("/validate", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -36,8 +36,39 @@
             })
 
             const data = await response.json();
-
-            responsecontainer.textContent = data.message ?? "Error fetching data";
+            const {carrier, country_code, country_name, country_prefix, international_format, line_type,local_format, location,number, valid} = data.data;
+            responsecontainer.innerHTML =   `
+                <table border="1" cellpadding="6" cellspacing="0">
+                <thead>
+                    <tr>
+                    <th>Carrier</th>
+                    <th>Country Code</th>
+                    <th>Country Name</th>
+                    <th>Country Prefix</th>
+                    <th>International Format</th>
+                    <th>Line Type</th>
+                    <th>Local Format</th>
+                    <th>Location</th>
+                    <th>Number</th>
+                    <th>Valid</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>${carrier}</td>
+                    <td>${country_code}</td>
+                    <td>${country_name}</td>
+                    <td>${country_prefix}</td>
+                    <td>${international_format}</td>
+                    <td>${line_type}</td>
+                    <td>${local_format}</td>
+                    <td>${location}</td>
+                    <td>${number}</td>
+                    <td>${valid}</td>
+                    </tr>
+                </tbody>
+                </table>
+            `
         }catch(err){
             responsecontainer.textContent = "network error"
             console.log(err)
