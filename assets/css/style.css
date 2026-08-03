@@ -111,6 +111,15 @@ body::before {
   gap: 0.75rem;
 }
 
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .brand-badge {
   display: inline-flex;
   align-items: center;
@@ -131,6 +140,41 @@ body::before {
   width: 15px;
   height: 15px;
   stroke: var(--accent-white);
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-silver);
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  transition: all var(--transition-fast);
+}
+
+.github-link:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: var(--accent-white);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.github-link svg {
+  width: 17px;
+  height: 17px;
+  stroke: var(--accent-white);
+  transition: transform var(--transition-fast);
+}
+
+.github-link:hover svg {
+  transform: scale(1.12);
 }
 
 .app-title {
@@ -764,10 +808,48 @@ body::before {
   flex-shrink: 0;
 }
 
+/* Footer Section */
+.app-footer {
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-glass);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.footer-github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.footer-github-link:hover {
+  color: var(--accent-white);
+}
+
+.footer-github-link svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+}
+
 /* Responsive adjustments */
 @media (max-width: 640px) {
   body {
     padding: 1.5rem 0.85rem 3rem;
+  }
+
+  .header-top {
+    justify-content: center;
   }
 
   .app-title {
@@ -799,5 +881,11 @@ body::before {
 
   .specs-grid {
     grid-template-columns: 1fr;
+  }
+
+  .app-footer {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
   }
 }
