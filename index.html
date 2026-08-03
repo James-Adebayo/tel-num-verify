@@ -3,79 +3,446 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Instantly verify phone numbers, check carrier details, line type, country location, and validation status worldwide.">
+    <title>Tel-Number Info | Global Phone Number Verification</title>
+
+    <!-- Google Fonts & Stylesheet -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/style.css">
-    <title>Document</title>
 </head>
 <body>
-    <form>
-        <h2>Tel-Number Info</h2>
-        <label for="number">Phone Number</label>
-        <input type="tel" name="number" id="number" required>
-        <button type="submit" id="submit">Search Number</button>
-    </form>
 
-    <div id="response">No data </div>
+    <div class="app-container">
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="brand-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="m9 12 2 2 4-4"/>
+                </svg>
+                <span>Telecom Intelligence API</span>
+            </div>
+            <h1 class="app-title">Phone Number Verifier</h1>
+            <p class="app-subtitle">Inspect carrier details, line type, country formats, and real-time validation for any phone number worldwide.</p>
+        </header>
+
+        <!-- Search Input Card -->
+        <section class="search-card">
+            <form id="verifyForm" class="search-form">
+                <div class="input-wrapper">
+                    <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                    <input 
+                        type="tel" 
+                        name="number" 
+                        id="number" 
+                        class="phone-input" 
+                        placeholder="Enter number (e.g. +14158586273)" 
+                        required 
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div class="presets-container">
+                    <span class="presets-label">Test Samples:</span>
+                    <button type="button" class="preset-pill" data-number="14158586273">
+                        🇺🇸 USA (+1415...)
+                    </button>
+                    <button type="button" class="preset-pill" data-number="442079460912">
+                        🇬🇧 UK (+4420...)
+                    </button>
+                    <button type="button" class="preset-pill" data-number="2348031234567">
+                        🇳🇬 Nigeria (+234...)
+                    </button>
+                    <button type="button" class="preset-pill" data-number="4930123456">
+                        🇩🇪 Germany (+4930...)
+                    </button>
+                </div>
+
+                <button type="submit" id="submit" class="btn-submit">
+                    <span class="spinner" id="spinner"></span>
+                    <svg id="btnIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <span id="btnText">Verify Phone Number</span>
+                </button>
+            </form>
+
+            <!-- Search History Chips -->
+            <div id="historySection" class="history-section" style="display: none;">
+                <div class="history-header">
+                    <span class="history-title">Recent Searches</span>
+                    <button type="button" id="clearHistoryBtn" class="btn-clear-history">Clear History</button>
+                </div>
+                <div id="historyChips" class="history-chips"></div>
+            </div>
+        </section>
+
+        <!-- Response Container -->
+        <main id="response" class="response-container">
+            <!-- Empty State Initial View -->
+            <div class="empty-state">
+                <div class="empty-icon-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                </div>
+                <h3>Ready to Verify</h3>
+                <p>Enter a phone number above or click one of the test sample pills to inspect carrier data, location, line type, and validation status.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast" class="toast">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span id="toastMsg">Copied to clipboard!</span>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('verifyForm');
+            const phoneInput = document.getElementById('number');
+            const responseContainer = document.getElementById('response');
+            const submitBtn = document.getElementById('submit');
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+            const spinner = document.getElementById('spinner');
+            const presetPills = document.querySelectorAll('.preset-pill');
+            const historySection = document.getElementById('historySection');
+            const historyChips = document.getElementById('historyChips');
+            const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+
+            // Load initial history
+            renderHistory();
+
+            // Handle Preset Pill Clicks
+            presetPills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    const num = pill.getAttribute('data-number');
+                    phoneInput.value = num;
+                    phoneInput.focus();
+                    triggerVerification(num);
+                });
+            });
+
+            // Form Submit Event
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const rawNumber = phoneInput.value.trim();
+                if (!rawNumber) return;
+                triggerVerification(rawNumber);
+            });
+
+            // Trigger Verification Request
+            async function triggerVerification(phonenumber) {
+                setLoadingState(true);
+                renderSkeleton();
+
+                try {
+                    const response = await fetch('/validate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ number: phonenumber })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Server returned status ${response.status}`);
+                    }
+
+                    const resData = await response.json();
+                    
+                    if (!resData.data) {
+                        throw new Error(resData.message || 'No verification data returned');
+                    }
+
+                    // Save to local history
+                    saveToHistory(phonenumber);
+                    renderHistory();
+
+                    // Render Results Dashboard
+                    renderResults(resData.data, resData);
+
+                } catch (err) {
+                    console.error('Verification error:', err);
+                    renderError(err.message || 'Failed to fetch verification details. Please try again.');
+                } finally {
+                    setLoadingState(false);
+                }
+            }
+
+            // Set Loading UI state
+            function setLoadingState(isLoading) {
+                submitBtn.disabled = isLoading;
+                if (isLoading) {
+                    spinner.style.display = 'inline-block';
+                    btnIcon.style.display = 'none';
+                    btnText.textContent = 'Verifying...';
+                } else {
+                    spinner.style.display = 'none';
+                    btnIcon.style.display = 'inline-block';
+                    btnText.textContent = 'Verify Phone Number';
+                }
+            }
+
+            // Render Skeleton Loader
+            function renderSkeleton() {
+                responseContainer.innerHTML = `
+                    <div class="loading-skeleton">
+                        <div class="skeleton-bar" style="width: 40%; height: 28px;"></div>
+                        <div class="skeleton-bar" style="width: 70%; height: 40px;"></div>
+                        <div class="specs-grid" style="margin-top: 1rem;">
+                            <div class="skeleton-bar" style="height: 120px;"></div>
+                            <div class="skeleton-bar" style="height: 120px;"></div>
+                            <div class="skeleton-bar" style="height: 120px;"></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Render Results View
+            function renderResults(data, fullResponse) {
+                const {
+                    carrier,
+                    country_code,
+                    country_name,
+                    country_prefix,
+                    international_format,
+                    line_type,
+                    local_format,
+                    location,
+                    number,
+                    valid
+                } = data;
+
+                const isValidBool = valid === true || valid === "true";
+                const statusBadge = isValidBool 
+                    ? `<div class="status-pill valid"><span class="status-dot"></span>Valid Number</div>`
+                    : `<div class="status-pill invalid"><span class="status-dot"></span>Invalid Number</div>`;
+
+                const formattedDisplayNum = international_format || number || local_format || 'N/A';
+                const carrierText = carrier || 'Unknown / Unassigned';
+                const lineTypeText = line_type ? line_type.toUpperCase() : 'UNKNOWN';
+                const countryText = country_name ? `${country_name} (${country_code || ''})` : 'Unknown Country';
+                const locationText = location || 'Not Specified';
+
+                responseContainer.innerHTML = `
+                    <div class="results-wrapper">
+                        <!-- Hero Card -->
+                        <div class="result-hero-card">
+                            <div class="hero-phone-group">
+                                ${statusBadge}
+                                <div class="hero-number">${escapeHtml(formattedDisplayNum)}</div>
+                                <div class="hero-location-subtitle">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    <span>${escapeHtml(countryText)}</span>
+                                </div>
+                            </div>
+                            <div class="hero-actions">
+                                <button type="button" class="btn-action" id="copyNumBtn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    <span>Copy Number</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Specifications Grid -->
+                        <div class="specs-grid">
+                            <!-- Card 1: Network & Carrier -->
+                            <div class="spec-card">
+                                <div class="card-header">
+                                    <div class="card-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                                    </div>
+                                    <div class="card-title">Network Carrier</div>
+                                </div>
+                                <div class="data-list">
+                                    <div class="data-row">
+                                        <span class="data-label">Carrier Name</span>
+                                        <span class="data-value">${escapeHtml(carrierText)}</span>
+                                    </div>
+                                    <div class="data-row">
+                                        <span class="data-label">Line Type</span>
+                                        <span class="badge-tag">${escapeHtml(lineTypeText)}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 2: Geography & Region -->
+                            <div class="spec-card">
+                                <div class="card-header">
+                                    <div class="card-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                    </div>
+                                    <div class="card-title">Geography</div>
+                                </div>
+                                <div class="data-list">
+                                    <div class="data-row">
+                                        <span class="data-label">Country</span>
+                                        <span class="data-value">${escapeHtml(country_name || 'N/A')}</span>
+                                    </div>
+                                    <div class="data-row">
+                                        <span class="data-label">Country Code / Prefix</span>
+                                        <span class="data-value">${escapeHtml(country_code || 'N/A')} (${escapeHtml(country_prefix || 'N/A')})</span>
+                                    </div>
+                                    <div class="data-row">
+                                        <span class="data-label">Location / City</span>
+                                        <span class="data-value">${escapeHtml(locationText)}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 3: Formats & Standard -->
+                            <div class="spec-card">
+                                <div class="card-header">
+                                    <div class="card-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+                                    </div>
+                                    <div class="card-title">Formatting</div>
+                                </div>
+                                <div class="data-list">
+                                    <div class="data-row">
+                                        <span class="data-label">International Format</span>
+                                        <span class="data-value">${escapeHtml(international_format || 'N/A')}</span>
+                                    </div>
+                                    <div class="data-row">
+                                        <span class="data-label">Local Format</span>
+                                        <span class="data-value">${escapeHtml(local_format || 'N/A')}</span>
+                                    </div>
+                                    <div class="data-row">
+                                        <span class="data-label">Raw Query</span>
+                                        <span class="data-value">${escapeHtml(number || 'N/A')}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Raw JSON Expandable Card -->
+                        <div class="raw-json-card" id="jsonCard">
+                            <div class="raw-json-header" id="jsonHeader">
+                                <span>View Raw JSON Payload</span>
+                                <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </div>
+                            <pre class="raw-json-content"><code>${escapeHtml(JSON.stringify(fullResponse, null, 2))}</code></pre>
+                        </div>
+                    </div>
+                `;
+
+                // Add Copy Event Handler
+                document.getElementById('copyNumBtn')?.addEventListener('click', () => {
+                    copyToClipboard(formattedDisplayNum, 'Phone number copied!');
+                });
+
+                // Toggle JSON Card
+                document.getElementById('jsonHeader')?.addEventListener('click', () => {
+                    document.getElementById('jsonCard')?.classList.toggle('open');
+                });
+            }
+
+            // Render Error Card
+            function renderError(message) {
+                responseContainer.innerHTML = `
+                    <div class="error-card">
+                        <svg class="error-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <div>
+                            <strong style="display: block; font-size: 1rem; margin-bottom: 0.25rem;">Verification Failed</strong>
+                            <span>${escapeHtml(message)}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Helper: Copy to Clipboard
+            function copyToClipboard(text, message = 'Copied to clipboard!') {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(message);
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
+            }
+
+            // Helper: Show Toast
+            function showToast(msg) {
+                toastMsg.textContent = msg;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2600);
+            }
+
+            // Helper: Escape HTML
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+
+            // History Storage Functions
+            function getHistory() {
+                try {
+                    return JSON.parse(localStorage.getItem('num_verify_history')) || [];
+                } catch {
+                    return [];
+                }
+            }
+
+            function saveToHistory(num) {
+                let history = getHistory();
+                history = history.filter(item => item !== num);
+                history.unshift(num);
+                if (history.length > 6) history.pop();
+                localStorage.setItem('num_verify_history', JSON.stringify(history));
+            }
+
+            function renderHistory() {
+                const history = getHistory();
+                if (history.length === 0) {
+                    historySection.style.display = 'none';
+                    return;
+                }
+
+                historySection.style.display = 'flex';
+                historyChips.innerHTML = history.map(item => `
+                    <button type="button" class="history-chip" data-num="${escapeHtml(item)}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span>${escapeHtml(item)}</span>
+                    </button>
+                `).join('');
+
+                // Attach click handlers
+                historyChips.querySelectorAll('.history-chip').forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        const num = chip.getAttribute('data-num');
+                        phoneInput.value = num;
+                        triggerVerification(num);
+                    });
+                });
+            }
+
+            clearHistoryBtn?.addEventListener('click', () => {
+                localStorage.removeItem('num_verify_history');
+                renderHistory();
+            });
+        });
+    </script>
 </body>
-
-<script>
-    const form = document.querySelector('form');
-    const responsecontainer = document.getElementById("response");
-    const submitBtn = document.getElementById('submit');
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const phonenumber = document.getElementById('number').value;
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Verifying...";
-        try {
-            const response = await fetch("/validate", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({number: phonenumber})
-            })
-
-            const data = await response.json();
-            const {carrier, country_code, country_name, country_prefix, international_format, line_type,local_format, location,number, valid} = data.data;
-            responsecontainer.innerHTML =   `
-                <table border="1" cellpadding="6" cellspacing="0">
-                <thead>
-                    <tr>
-                    <th>Carrier</th>
-                    <th>Country Code</th>
-                    <th>Country Name</th>
-                    <th>Country Prefix</th>
-                    <th>International Format</th>
-                    <th>Line Type</th>
-                    <th>Local Format</th>
-                    <th>Location</th>
-                    <th>Number</th>
-                    <th>Valid</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                    <td>${carrier}</td>
-                    <td>${country_code}</td>
-                    <td>${country_name}</td>
-                    <td>${country_prefix}</td>
-                    <td>${international_format}</td>
-                    <td>${line_type}</td>
-                    <td>${local_format}</td>
-                    <td>${location}</td>
-                    <td>${number}</td>
-                    <td>${valid}</td>
-                    </tr>
-                </tbody>
-                </table>
-            `
-        }catch(err){
-            responsecontainer.textContent = err
-            console.log(err)
-        }finally{
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Search number";
-        }
-    })
-</script>
 </html>
