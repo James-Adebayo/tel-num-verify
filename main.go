@@ -11,5 +11,5 @@ func main() {
 	})
 	http.HandleFunc("/validate", controller.ValidateController)
 	// fmt.Println("Server started on http://localhost:8080/")
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":80", nil)
 }
