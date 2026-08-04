@@ -76,7 +76,8 @@ num-verify/
 Create a `.env` or `.env.local` file in the root directory and configure your Numverify access key:
 
 ```env
-NUMVERIFY_KEY=your_apilayer_numverify_api_key
+NUM_BASE_URL=  Your Numverify baseUrl
+NUM_ACCES_KEY = Your Numverify access key
 ```
 
 ### Running Locally
